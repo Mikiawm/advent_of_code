@@ -1,5 +1,5 @@
 #typed: true
-class Solve
+class Submit
   def initialize(year, day, part)
     @year = year
     @day = day
@@ -12,36 +12,28 @@ class Solve
   def submit_answer
     load(solution_file_name)
 
-    item = Object.const_get("Year2021").const_get("Day03").new
+    challange = Object.const_get("Year2021").const_get("Day03").new
 
-    answer = item.part_one();
+    p @part
+    part = (@part == "1") ? "part_one" : "part_two"
+    answer = challange.send(part);
 
-    # p answer
-    @level = 1
-    @answer = 2
-    data = "{level: 1, answer: 10}"
-    # data = {level: @level, answer: @answer}
+    p answer
 
-    uri = URI("https://adventofcode.com/2022/day/24/answer")
+    # response = WebClient.submit(2022, 24, 1, answer, cookie)
 
-    headers = { 'Cookie': "session=#{cookie}" }
+    # p response
+    # wrong = /not the right answer/.match?(response.body)
+    # already_complete = /Did you already complete it/.match?(response.body)
+    # waiting_regex = /You have (\d*m* *\d+s) left to wait/
+    # waiting = waiting_regex.match?(response.body)
 
-    # options_with_answer = @options.merge({ body: { level: @level.to_s, answer: @answer.to_s } })
+    # puts "That's not the right answer" if wrong
+    # puts "You have already completed this challenge" if already_complete
 
-    # response = Net::HTTP.post(uri, data, headers)
-    # response = post("https://adventofcode.com/2022/day/24/answer", data)
+    # puts response.body[waiting_regex] if waiting
 
-
-    response = WebClient.submit(2022, 22, 1, 10, cookie)
-    wrong = /not the right answer/.match?(response.body)
-    already_complete = /Did you already complete it/.match?(response.body)
-    waiting_regex = /You have (\d*m* *\d+s) left to wait/
-    waiting = waiting_regex.match?(response.body)
-
-    puts "That's not the right answer" if wrong
-    puts "You have already completed this challenge" if already_complete
-
-    puts "Waiting" if waiting
+    # puts "Correct" if !wrong && !already_complete && !waiting
   end
 
 
