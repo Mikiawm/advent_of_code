@@ -8,5 +8,6 @@ gem 'tapioca', require: false, :group => :development
 gem 'sorbet', :group => :development
 
 gem 'thor'
-gem 'curb'
 gem 'httparty'
+gem 'minitest'
+gem 'rubocop'
