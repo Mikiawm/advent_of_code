@@ -7,11 +7,11 @@ module Year2021
     # @input is available if you need the raw data input
     # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
 
-    def part_1
+    def part_one
       nil
     end
 
-    def part_2
+    def part_two
       nil
     end
 

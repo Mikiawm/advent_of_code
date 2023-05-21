@@ -1,12 +1,13 @@
-# typed: false
+# frozen_string_literal: true
+# typed: true
 
 class SolutionBase
-  def self.part_1(*input)
-    new(*input).part_1
+  def self.part_one(input)
+    new(*input).part1
   end
 
-  def self.part_2(*input)
-    new(*input).part_2
+  def self.part_two(input)
+    new(*input).part2
   end
 
   def initialize(input)
