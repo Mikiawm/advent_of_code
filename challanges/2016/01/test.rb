@@ -3,10 +3,10 @@
 require 'minitest/autorun'
 require_relative 'solution'
 
-module Year2015
+module Year2016
   class TestDay01 < Minitest::Test
     def setup
-      input = ''
+      input = ""
       @day01 = Day01.new(input)
     end
 

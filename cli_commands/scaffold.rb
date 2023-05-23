@@ -79,10 +79,10 @@ class Scaffold
       # frozen_string_literal: true
 
       require_relative '../solution_base'
-      module Year #{@year}
-        class Day #{day_string} < SolutionBase
+      module Year#{@year}
+        class Day#{day_string} < SolutionBase
           def part_one
-            p input
+            p @input
           end
 
           def part_two

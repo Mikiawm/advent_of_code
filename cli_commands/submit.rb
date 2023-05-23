@@ -1,7 +1,7 @@
 # typed: true
 
 require_relative('command')
-require_relative('aoc_api')
+# require_relative('aoc_api')
 
 class Submit
   include Command
@@ -15,16 +15,12 @@ class Submit
 
   def submit_answer
     load(solution_file_name)
-
     challange = Object.const_get("Year#{@year}").const_get("Day#{day_string}").new
-
-    p challange.methods
 
     answer = challange.send(part_string)
 
-    response = AocApi.submit(@year, day_string, @part, answer, cookie)
-
-    check_response(response.body)
+    response = AocApi.submit(@year, @day, @part, answer, cookie)
+    p check_response(response.body)
   end
 
   def check_response(response_body)

@@ -17,11 +17,12 @@ class AocApi
   def self.submit(year, day, part, answer, session_cookie)
     post(
       "/#{year}/day/#{day}/answer",
-      body: {
-        level: part,
-        answer: answer
+      headers: {
+        'Cookie' => "session=#{session_cookie}",
+        'User-Agent' => 'mikiawm@gmail.com'
       },
-      headers: cookie_header(session_cookie)
+      follow_redirects: false,
+      body: { level: part.to_s, answer: answer.to_s }
     )
   end
 

@@ -1,7 +1,5 @@
 # typed: true
 
-require 'net/http'
-require 'uri'
 module Command
   def cookie
     @cookie ||= ENV['AOC_COOKIE']
