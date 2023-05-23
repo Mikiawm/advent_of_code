@@ -1,10 +1,11 @@
 # typed: true
 
-require 'net/http'
-require 'uri'
+require_relative('command')
+require_relative('aoc_api')
 
 class Scaffold
   include Thor::Base
+  include Command
 
   def initialize(day, year)
     @day = day
@@ -12,66 +13,59 @@ class Scaffold
   end
 
   def execute
-    raise MissingCookieError unless cookie_present? && cookie
+    # raise MissingCookieError unless cookie_present? && cookie
 
     say('Fetching input...')
-    input = fetch_input
+    input = AocApi.get_input(@year, @day, cookie)
 
-    unless Dir.exist?('challanges')
-      say('Creating challanges directory...')
-      Dir.mkdir('challanges')
-    end
-
-    unless Dir.exist?("challanges/#{@year}")
-      say('Creating year directory...')
-      Dir.mkdir("challanges/#{@year}")
-    end
-
-    unless Dir.exist?("challanges/#{@year}/#{day_string}")
-      say('Creating day directory...')
-      Dir.mkdir("challanges/#{@year}/#{day_string}")
-    end
-
-    unless File.exist?(solution_file_name)
-      say("Creating file: #{solution_file_name}...")
-      create_file(solution_file_name, solution_file_contents)
-    end
-
-    unless File.exist?(test_file_name)
-      say("Creating file: #{test_file_name}...")
-      create_file(test_file_name, test_file_contents)
-    end
-
-    say("Writing input to #{input_file_name}...")
-    create_file(input_file_name, input)
+    create_challanges_directory
+    create_year_directory
+    create_day_directory
+    create_input_file(input)
+    create_soultion_file
+    create_test_file
 
     say('Done!', :green)
   end
 
-  private
+  def create_challanges_directory
+    return if Dir.exist?('challanges')
 
-  def cookie
-    @cookie ||= ENV['AOC_COOKIE']
-    # @cookie ||= ENV.fetch('AOC_COOKIE', nil)
+    say('Creating challanges directory...')
+    Dir.mkdir('challanges')
   end
 
-  def cookie_present?
-    ENV.key?('AOC_COOKIE')
+  def create_year_directory
+    return if Dir.exist?("challanges/#{@year}")
+
+    say('Creating year directory...')
+    Dir.mkdir("challanges/#{@year}")
   end
 
-  def fetch_input
-    url = URI("https://adventofcode.com/#{@year}/day/#{@day}/input")
+  def create_day_directory
+    return if Dir.exist?("challanges/#{@year}/#{day_string}")
 
-    https = Net::HTTP.new(url.host, url.port)
-    https.use_ssl = true
+    say('Creating day directory...')
+    Dir.mkdir("challanges/#{@year}/#{day_string}")
+  end
 
-    request = Net::HTTP::Get.new(url)
-    request['Cookie'] = "session=#{cookie}"
+  def create_soultion_file
+    return if File.exist?(solution_file_name)
 
-    request['User-Agent'] = 'github.com/mikiawm'
+    say("Creating file: #{solution_file_name}...")
+    create_file(solution_file_name, solution_file_contents)
+  end
 
-    response = https.request(request)
-    response.read_body
+  def create_input_file(input)
+    say("Writing input to #{input_file_name}...")
+    create_file(input_file_name, input)
+  end
+
+  def create_test_file
+    return if File.exist?(test_file_name)
+
+    say("Creating file: #{test_file_name}...")
+    create_file(test_file_name, test_file_contents)
   end
 
   def create_file(file_name, contents = nil)
@@ -80,30 +74,22 @@ class Scaffold
     end
   end
 
-  def input_file_name
-    "challanges/#{@year}/#{day_string}/input.txt"
-  end
-
-  def day_string
-    @day < 10 ? "0#{@day}" : @day.to_s
-  end
-
   def solution_file_contents
     <<~RUBY
       # frozen_string_literal: true
-        module Year#{@year}
-          module Day#{day_string}
-            class << self
-              def part_one(input)
-                raise NotImplementedError
-              end
 
-              def part_two(input)
-                raise NotImplementedError
-              end
-            end
+      require_relative '../solution_base'
+      module Year #{@year}
+        class Day #{day_string} < SolutionBase
+          def part_one
+            p input
+          end
+
+          def part_two
+            raise NotImplementedError
           end
         end
+      end
     RUBY
   end
 
@@ -131,13 +117,5 @@ class Scaffold
         end
       end
     RUBY
-  end
-
-  def solution_file_name
-    "challanges/#{@year}/#{day_string}/solution.rb"
-  end
-
-  def test_file_name
-    "challanges/#{@year}/#{day_string}/test.rb"
   end
 end

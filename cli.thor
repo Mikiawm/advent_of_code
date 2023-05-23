@@ -13,8 +13,8 @@ class CLI < Thor
   option :day, default: Time.now.day.to_s
   option :year, default: Time.now.year.to_s
   def scaffold
-    p ENV.keys
-    Scaffold.new(options[:day].to_i, options[:year].to_i).execute
+    scaffold = Scaffold.new(options[:day], options[:year])
+    scaffold.execute
   rescue InvalidDayError
     say 'Error: The day argument must be an integer between 1 and 25.', :red
   rescue MissingCookieError

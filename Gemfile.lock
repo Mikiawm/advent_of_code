@@ -10,7 +10,7 @@ GEM
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
-    minitest (5.16.3)
+    minitest (5.18.0)
     multi_xml (0.6.0)
     netrc (0.11.0)
     parallel (1.23.0)
@@ -72,7 +72,7 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
-  minitest
+  minitest (= 5.18.0)
   rubocop
   sorbet
   sorbet-runtime

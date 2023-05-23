@@ -1,5 +1,10 @@
-#typed: true
+# typed: true
+
+require_relative('command')
+require_relative('aoc_api')
+
 class Submit
+  include Command
   def initialize(year, day, part)
     @year = year
     @day = day
@@ -8,76 +13,32 @@ class Submit
     submit_answer
   end
 
-
   def submit_answer
     load(solution_file_name)
 
-    challange = Object.const_get("Year2021").const_get("Day03").new
+    challange = Object.const_get("Year#{@year}").const_get("Day#{day_string}").new
 
-    p @part
-    part = (@part == "1") ? "part_one" : "part_two"
-    answer = challange.send(part);
+    p challange.methods
 
-    p answer
+    answer = challange.send(part_string)
 
-    # response = WebClient.submit(2022, 24, 1, answer, cookie)
+    response = AocApi.submit(@year, day_string, @part, answer, cookie)
 
-    # p response
-    # wrong = /not the right answer/.match?(response.body)
-    # already_complete = /Did you already complete it/.match?(response.body)
-    # waiting_regex = /You have (\d*m* *\d+s) left to wait/
-    # waiting = waiting_regex.match?(response.body)
-
-    # puts "That's not the right answer" if wrong
-    # puts "You have already completed this challenge" if already_complete
-
-    # puts response.body[waiting_regex] if waiting
-
-    # puts "Correct" if !wrong && !already_complete && !waiting
+    check_response(response.body)
   end
 
+  def check_response(response_body)
+    wrong = /not the right answer/.match?(response_body)
+    already_complete = /Did you already complete it/.match?(response_body)
+    waiting_regex = /You have (\d*m* *\d+s) left to wait/
+    waiting = waiting_regex.match?(response_body)
 
-  def cookie
-    @cookie ||= ENV.fetch("AOC_COOKIE", nil)
-  end
+    correct = !wrong && !already_complete && !waiting
 
-  def solution_file_name
-    "challanges/#{@year}/#{day_string}/solution.rb"
-  end
+    return "That's not the right answer" if wrong
+    return 'You have already completed this challenge' if already_complete
+    return response_body[waiting_regex] if waiting
 
-  def day_string
-    @day.to_i < 10 ? "0#{@day}" : @day.to_s
+    return 'Correct' if correct
   end
 end
-
-require "httparty"
-
-  class WebClient
-    include HTTParty
-
-    base_uri "https://adventofcode.com"
-
-    def self.get_input(year, day, session_cookie)
-      get(
-        "/#{year}/day/#{day}/input",
-        headers: cookie_header(session_cookie)
-      )
-    end
-
-    def self.submit(year, day, part, answer, session_cookie)
-      post(
-        "/#{year}/day/#{day}/answer",
-        body: {
-          level: part,
-          answer: answer
-        },
-        headers: cookie_header(session_cookie)
-      )
-    end
-
-    def self.cookie_header(session_cookie)
-      cookie_hash = HTTParty::CookieHash.new
-      cookie_hash.add_cookies(session: session_cookie)
-      { "Cookie" => cookie_hash.to_cookie_string }
-    end
-  end

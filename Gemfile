@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'sorbet-runtime'
 
-gem 'tapioca', require: false, :group => :development
-gem 'sorbet', :group => :development
+gem 'sorbet', group: :development
+gem 'tapioca', require: false, group: :development
 
-gem 'thor'
 gem 'httparty'
-gem 'minitest'
+gem 'minitest', '5.18.0'
 gem 'rubocop'
+gem 'thor'
