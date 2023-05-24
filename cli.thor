@@ -39,7 +39,7 @@ class CLI < Thor
   option :year, default: Time.now.year.to_s
   option :part, default: 'one'
   def eval
-    Eval.new(options[:year], options[:day], options[:part])
+    Eval.new(options[:year], options[:day]).execute
   rescue InvalidDayError
     say 'Error: The day argument must be an integer between 1 and 25.', :red
   rescue MissingCookieError
