@@ -77,12 +77,18 @@ class Scaffold
   def solution_file_contents
     <<~RUBY
       # frozen_string_literal: true
+      # typed: true
 
-      require_relative '../solution_base'
+      require_relative '../../solution_base'
       module Year#{@year}
         class Day#{day_string} < SolutionBase
+          def initialize
+            input = File.read(File.join(File.dirname(__FILE__), 'input.txt'))
+            super(input)
+          end
+
           def part_one
-            p @input
+            raise NotImplementedError
           end
 
           def part_two
@@ -101,10 +107,15 @@ class Scaffold
       require_relative 'solution'
 
       module Year#{@year}
+        # class Day#{day_string}
+        #   def initialize
+        #     @input = ''
+        #   end
+        # end
+
         class TestDay#{day_string} < Minitest::Test
           def setup
-            input = ""
-            @day#{day_string} = Day#{day_string}.new(input)
+            @day#{day_string} = Day#{day_string}.new
           end
 
           def test_part_one
