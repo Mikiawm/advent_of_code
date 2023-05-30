@@ -15,20 +15,20 @@ module Year2015
       end
 
       def toggle(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state = light.state.zero? ? 1 : 0 if light_range_condition(light, x_start, y_start, x_end, y_end)
+        @arr.select { |light| light_range_condition(light, x_start, y_start, x_end, y_end) }.each do |light|
+          light.state = light.state.zero? ? 1 : 0
         end
       end
 
       def on(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state = 1 if light_range_condition(light, x_start, y_start, x_end, y_end)
+        @arr.select { |light| light_range_condition(light, x_start, y_start, x_end, y_end) }.each do |light|
+          light.state = 1
         end
       end
 
       def off(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state = 0 if light_range_condition(light, x_start, y_start, x_end, y_end)
+        @arr.select { |light| light_range_condition(light, x_start, y_start, x_end, y_end) }.each do |light|
+          light.state = 0
         end
       end
 
@@ -53,20 +53,22 @@ module Year2015
 
     class BrightnessLightGrid < LightGrid
       def toggle(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state += 2 if light_range_condition(light, x_start, y_start, x_end, y_end)
+        @arr.select { |light| light_range_condition(light, x_start, y_start, x_end, y_end) }.each do |light|
+          light.state += 2
         end
       end
 
       def on(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state += 1 if light_range_condition(light, x_start, y_start, x_end, y_end)
+        @arr.select { |light| light_range_condition(light, x_start, y_start, x_end, y_end) }.each do |light|
+          light.state += 1
         end
       end
 
       def off(x_start, y_start, x_end, y_end)
-        @arr.each do |light|
-          light.state -= 1 if light_range_condition(light, x_start, y_start, x_end, y_end) && light.state.positive?
+        @arr.select do |light|
+          light_range_condition(light, x_start, y_start, x_end, y_end) && light.state.positive?
+        end.each do |light|
+          light.state -= 1
         end
       end
     end
