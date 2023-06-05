@@ -33,7 +33,7 @@ module Year2015
       load_grades
 
       @grades['b'] = val_a
-      p get_value('a')
+      get_value('a')
     end
 
     def load_grades
