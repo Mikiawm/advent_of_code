@@ -10,29 +10,29 @@ module Year2015
     end
 
     def part_one
-      hash = Hash.new { |h, k| h[k] = {} }
+      friends = Hash.new { |h, k| h[k] = {} }
       T.cast(data, T::Array[String]).map(&:split).each do |line|
-        hash[line[0]][T.must(line[10]).chop] = line[2] == 'gain' ? line[3].to_i : -line[3].to_i
+        friends[line[0]][T.must(line[10]).chop] = line[2] == 'gain' ? line[3].to_i : -line[3].to_i
       end
 
-      distances(hash).max
+      distances(friends).max
     end
 
     def part_two
-      hash = Hash.new { |h, k| h[k] = {} }
+      friends = Hash.new { |h, k| h[k] = {} }
       T.cast(data, T::Array[String]).map(&:split).each do |line|
-        hash[line[0]][T.must(line[10]).chop] = line[2] == 'gain' ? line[3].to_i : -line[3].to_i
+        friends[line[0]][T.must(line[10]).chop] = line[2] == 'gain' ? line[3].to_i : -line[3].to_i
       end
 
-      new_hash = {}
+      me = {}
 
-      hash.each_key do |key|
-        new_hash[key] = 0
+      friends.each_key do |key|
+        me[key] = 0
       end
 
-      hash['me'] = new_hash
+      friends['me'] = me
 
-      distances(hash).max
+      distances(friends).max
     end
 
     def distances(hash)
