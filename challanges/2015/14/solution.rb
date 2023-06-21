@@ -11,8 +11,7 @@ module Year2015
 
     def part_one
       time = 2503
-      sums = []
-      T.cast(data, T::Array[String]).map(&:split).each do |line|
+      sums = T.cast(data, T::Array[String]).map(&:split).map do |line|
         speed = line[3].to_i
         last = line[6].to_i
         rest = line[13].to_i
@@ -20,9 +19,8 @@ module Year2015
         distance_from_repeats = time / elapses * last * speed
         distance_from_rest = time % elapses > last ? last * speed : (time % elapses) * speed
 
-        sums << distance_from_repeats + distance_from_rest
-      end
-      sums.max
+        distance_from_repeats + distance_from_rest
+      end.max
     end
 
     class Reindeer
@@ -55,9 +53,8 @@ module Year2015
     end
 
     def part_two
-      reindeers = []
-      T.cast(data, T::Array[String]).map(&:split).each do |line|
-        reindeers << Reindeer.new(line[0], line[3].to_i, line[6].to_i, line[13].to_i)
+      reindeers = T.cast(data, T::Array[String]).map(&:split).map do |line|
+        Reindeer.new(line[0], line[3].to_i, line[6].to_i, line[13].to_i)
       end
 
       2503.times do |cur|
