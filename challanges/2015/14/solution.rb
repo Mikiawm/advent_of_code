@@ -64,7 +64,7 @@ module Year2015
         Reindeer.fastest(reindeers).increment_leader
       end
 
-      p Reindeer.leader(reindeers).lead_value
+      Reindeer.leader(reindeers).lead_value
     end
   end
 end
