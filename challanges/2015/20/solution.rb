@@ -14,16 +14,10 @@ module Year2015
     end
 
     def part_one
-      houses = {}
       cur_house = 1
 
       loop do
-        dividors = get_dividors(cur_house)
-
-        dividors.each do |dividor|
-          houses[cur_house] = houses[cur_house].to_i + dividor * 10
-        end
-        return cur_house if houses[cur_house] >= 29_000_000
+        return cur_house if get_dividors(cur_house).sum >= 2_900_000
 
         cur_house += 1
       end
