@@ -90,36 +90,36 @@ module Year2015
 
       rings_combs = rings.combination(1).to_a + rings.combination(2).to_a + [[]]
 
-      items_comb = []
+      items_combs = []
 
       weapons.each do |weapon|
         armors.each do |armor|
           rings_combs.each do |rings|
-            items_comb << [weapon, armor, rings].flatten.compact
+            items_combs << [weapon, armor, rings].flatten.compact
           end
         end
       end
 
       costs = []
-      items_comb.each do |items|
+      items_combs.each do |items|
         enemy = Character.new(109, 8, 2)
         hero = Character.new(100, 0, 0)
         hero.add_items(items)
 
         costs << hero.value unless hero.fight(enemy)
       end
-
+      # part_2
       p costs.max
 
       costs = []
-      items_comb.each do |items|
+      items_combs.each do |items|
         enemy = Character.new(109, 8, 2)
         hero = Character.new(100, 0, 0)
         hero.add_items(items)
 
         costs << hero.value if hero.fight(enemy)
       end
-
+      # part_1
       p costs.min
     end
 
