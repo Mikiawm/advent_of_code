@@ -177,11 +177,9 @@ module Year2015
 
       mana_lst = T.let(10_000, Integer)
 
-      i = 0
       correct_state = T.let(nil, T.nilable(Year2015::Day22::State))
 
       loop do
-        i += 1
         new_states = []
         states.each do |state|
           state.do_effects
