@@ -18,7 +18,6 @@ module Year2015
     end
 
     def split_packages(split)
-      possibles = {}
       first_group = T.let([], T::Array[Array])
       numeric_data = T.cast(data, T::Array[String]).map(&:to_i)
       target_sum = numeric_data.sum / split
