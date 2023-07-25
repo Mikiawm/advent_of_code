@@ -14,13 +14,13 @@ module Year2015
       row = 2981
       col = 3075
 
-      current_deep = row + col - 1
+      target_deep = row + col - 1
 
-      (2..current_deep).each do |n|
+      (2..target_deep).each do |n|
         n.times do |i|
           code = (code * 252_533) % 33_554_393
 
-          return code if n == current_deep && i + 1 == col
+          return code if n == target_deep && i + 1 == col
         end
       end
     end
